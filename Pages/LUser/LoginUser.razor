@@ -1,0 +1,96 @@
+﻿@page "/LoginUser"
+
+@using Login.Models
+@using Login.DAL
+@using Login.BLL
+
+@inject IToastService toast
+@inject NavigationManager Nav
+@inject IJSRuntime Confirmacion
+
+<EditForm Model="user">
+    <div class="modal-dialog text-center">
+        <div class="col-sm-11 main-section">
+            <div class="modal-content">
+
+                <div class="card-header-pills">
+                    <div class="text-center">
+                        <h1>Iniciar sesión</h1>
+                        <span class="oi oi-person"></span>
+                    </div>
+                </div>
+            </div>
+        <form>
+            <div class="card bg-light">
+                <div class="card-header">
+                    <div class="modal-dialog text-center">
+                        <div class="col-sm-8 main-section">
+                            <div class="modal-content">
+                                <div class="col-12">
+                                </div>
+
+                                <div class="col-auto">
+                                    <div class="text-center">
+
+
+
+                                        <div class="form-group" id="user-group">
+                                            <input type="text" class="form-control" placeholder="Nombre de usuario" name="username" />
+                                        </div>
+
+                                        <div class="form-group" id="user-group">
+                                            <input type="text" class="form-control" placeholder="Gmail" name="gmail" />
+                                        </div>
+
+                                        <div class="form-group" id="contrasena-group">
+                                            <input type="password" class="form-control" placeholder="Password" name="password" />
+                                        </div>
+
+                                    </div>
+
+                                    <div class="d-block justify-content-center mt-1">
+                                        <button type="submit" class="btn btn-primary" @onclick="Logearse">Iniciar sesión</button>
+                                        No tienes una cuenta?<a href="/RUsuarios" class="ml-2" @onclick="Logearse">Registrarse</a>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+                
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    Usuarios user = new Usuarios();
+    string nombreUser;
+    string claveUser;
+    string gmailUser;
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+    }
+
+    public void Nuevo()
+    {
+        user = new Usuarios();
+    }
+    public void Logearse()
+    {
+        bool paso = false;
+
+        paso = UsuarioBLL.ExisteUsuario(nombreUser, claveUser, gmailUser);
+        toast.ShowSuccess("sesion iniciada");
+    }
+
+    public void Registrar()
+    {
+        Nav.NavigateTo($"/Bienvenido");
+
+    }
+}
